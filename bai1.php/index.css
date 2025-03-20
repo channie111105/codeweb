@@ -1,0 +1,689 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #121212; /* Màu nền tối */
+    color: #ffffff; /* Màu chữ trắng */
+    text-align: center;
+}
+/* ======= TOPBAR ======= */
+.topbar {
+    display: flex;
+    justify-content: space-around; /* Cách đều hai bên */
+    align-items: center;
+    background-color: #7a1c32; /* Màu nền */
+    padding: 10px 20px;
+    color: white;
+    font-size: 16px;
+    height: 40px; /* Điều chỉnh chiều cao topbar */
+    display: flex;
+}
+
+.topbar-left {
+    display: flex;
+    gap: 60px; /* Tạo khoảng cách giữa các phần */
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+/* ======= HEADER ======= */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #111;
+    padding: 15px 20px;
+    position: absolute; /* Mặc định ở dưới topbar */
+    width: 100vw; /* Chiều ngang toàn màn hình */
+    height: 80px; /* Chiều cao mặc định */
+    top: 40px; /* Độ cao của topbar */
+    left: 0;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+}
+.shrink {
+    position: fixed; /* Khi cuộn thì dính lên */
+    top: 0;
+    height: 70px; /* Giảm chiều cao */
+    padding: 15px 20px; /* Giảm padding */
+    background-color: rgba(0, 0, 0, 0.8); /* Làm header mờ nhẹ */
+    transform: scale(1); /* Không thu nhỏ */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.logo a {
+    font-size: 35px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+
+/* ======= SEARCH BOX ======= */
+.search-box {
+    display: flex;
+    width: 40%;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 12px; /* Tăng padding để chiều cao đồng đều */
+    border: none;
+    border-radius: 5px 0 0 5px;
+    font-size: 16px; /* Đảm bảo chữ không bị nhỏ quá */
+    height: 42px; /* Cố định chiều cao */
+}
+
+.search-box button {
+    padding: 12px 20px; /* Tăng padding để bằng với input */
+    border: none;
+    background-color: #e6007e;
+    color: white;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 16px; /* Đồng bộ cỡ chữ */
+    height: 42px; /* Cố định chiều cao */
+}
+
+
+/* ======= HOTLINE ======= */
+.hotline {
+    color: white;
+    text-align: right;
+    font-weight: bold;
+}
+
+.hotline span {
+    color: #ff0099;
+}
+
+/* ======cart======= */
+.cart {
+    font-size: 18px; /* Tăng kích thước chữ */
+    font-weight: bold; /* Làm đậm */
+    color: palevioletred; /* Chọn màu vàng nổi bật */
+    background-color: plum ; /* Nền đậm hơn */
+    padding: 10px 15px; /* Tạo khoảng cách trong */
+    border-radius: 5px; /* Bo tròn nhẹ */
+}
+
+.cart:hover {
+    background-color: palevioletred; /* Khi hover đổi màu */
+    color: plum;
+    animation: shake 0.3s ease-in-out;
+}
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    50% { transform: translateX(2px); }
+    75% { transform: translateX(-2px); }
+    100% { transform: translateX(0); }
+}
+
+
+h1 {
+    color: #ff00ff;
+    font-size: 2em;
+}
+
+#banner {
+    background: linear-gradient(135deg, #ff00ff, #ff66ff);
+    padding: 50px;
+    margin: 20px auto;
+    border-radius: 10px;
+    width: 80%;
+}
+
+#banner h2 {
+    font-size: 2em;
+    color: #fff;
+}
+
+#banner p {
+    font-size: 1.2em;
+    margin: 10px 0;
+    color: #fff;
+}
+
+#banner button {
+    background: #ff00ff;
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#banner button:hover {
+    background: #cc00cc;
+}
+
+/* ======SÁCH NỔI BẬT======== */
+h2 {
+    margin-top: 40px;
+    color: #ed47c4;
+    text-align: center;
+    position: relative;
+    left: 150px; /* dịch sang phải một chút */
+    font-size: 32px;
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px #ed47c4, 0 0 20px #ed47c4, 0 0 30px #ed47c4;
+    }
+    to {
+        text-shadow: 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
+    }
+}
+
+.book-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 20px;
+    margin: 10px 40px;
+    justify-content: end; 
+    position: relative;
+    width: 73vw; /* Giảm chiều ngang, không full màn hình */
+    margin-left: auto; /* Đẩy sang phải */
+    margin-right: 30px; /* Canh sát lề phải */
+    overflow: hidden;
+}
+
+.book {
+    background: #1e1e1e;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+    width: 200px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.book img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.book h3 {
+    font-size: 16px;
+    margin: 10px 0;
+    min-height: 40px; /* giữ đều hàng */
+}
+
+.book p {
+    color: #ff4da6;
+    margin-bottom: 10px;
+}
+
+.book button {
+    background-color: #ff00ff;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.book button:hover {
+    background-color: #cc00cc;
+}
+
+.book:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
+}
+
+
+footer {
+    margin-top: 30px;
+    padding: 20px;
+    background: #1e1e1e;
+    color: #ff00ff;
+}
+/* =====sach van hoc==== */
+.vanhoc-slider-container {
+    position: relative;
+    overflow: hidden;
+    background: #111;
+    padding: 10px 0; /* Thu nhỏ khoảng cách trên dưới */
+    width: 160%; /* Điều chỉnh chiều ngang nhỏ lại */
+    max-width: 1100px; /* Giới hạn chiều rộng tối đa */
+    margin-left: auto; /* Đẩy sát sang phải */
+    margin-right: 30px; /* Cách lề phải một chút cho đẹp */
+    border-radius: 10px;
+}
+.slider-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    padding: 10px 20px;
+}
+
+.slider-header h2 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.slider-buttons {
+    display: flex;
+    gap: 10px; /* Khoảng cách giữa hai nút */
+}
+
+.prev-btn, .next-btn {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.prev-btn:hover, .next-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+.slider-track {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.vanhoc-book {
+    min-width: 250px;
+    background: #222;
+    margin: 0 10px;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.vanhoc-book:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 105, 180, 0.6);
+}
+
+.vanhoc-book img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.vanhoc-book h3 {
+    color: #fdfdfd;
+    margin: 10px 0 5px;
+    font-size: 18px;
+}
+
+.vanhoc-book p {
+    color: #ff69b4;
+}
+
+.vanhoc-book .price {
+    margin: 10px 0;
+}
+
+.vanhoc-book .discount-price {
+    color: #ff69b4;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.vanhoc-book .old-price {
+    text-decoration: line-through;
+    color: #ccc;
+}
+
+.vanhoc-book .add-to-cart {
+    background: #ff00c8;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.vanhoc-book .add-to-cart:hover {
+    background: #ff3399;
+}
+h7 {
+    margin-top: 40px;
+    color: #ed47c4;
+    text-align: center;
+    position: relative;
+    left: 800px; /* dịch sang phải một chút */
+    font-size: 32px;
+    animation: glow 1.5s infinite alternate;
+}
+/* ======sach tam ly doi song==== */
+h8 {
+    margin-top: 40px;
+    color: #ed47c4;
+    text-align: center;
+    position: relative;
+    left: 650px; /* dịch sang phải một chút */
+    font-size: 32px;
+    animation: glow 1.5s infinite alternate;
+}
+.sach-tam-ly-ky-nang-song-slider-container {
+    position: relative;
+    overflow: hidden;
+    background: #111;
+    padding: 10px 0; /* Thu nhỏ khoảng cách trên dưới */
+    width: 160%; /* Điều chỉnh chiều ngang nhỏ lại */
+    max-width: 1100px; /* Giới hạn chiều rộng tối đa */
+    margin-left: auto; /* Đẩy sát sang phải */
+    margin-right: 30px; /* Cách lề phải một chút cho đẹp */
+    border-radius: 10px;
+}
+.tamlykynangsong-book {
+    min-width: 250px;
+    background: #222;
+    margin: 0 10px;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.tamlykynangsong-book:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 105, 180, 0.6);
+}
+
+.tamlykynangsong-book img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.tamlykynangsong-book h3 {
+    color: #fdfdfd;
+    margin: 10px 0 5px;
+    font-size: 18px;
+}
+
+.tamlykynangsong-book p {
+    color: #ff69b4;
+}
+
+.tamlykynangsong-book .price {
+    margin: 10px 0;
+}
+
+.tamlykynangsong-book .discount-price {
+    color: #ff69b4;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.tamlykynangsong-book .old-price {
+    text-decoration: line-through;
+    color: #ccc;
+}
+
+.tamlykynangsong-book .add-to-cart {
+    background: #ff00c8;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tamlykynangsong-book .add-to-cart:hover {
+    background: #ff3399;
+} 
+
+/* CSS giữ nguyên cho Login và Register */
+.Login {
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(232, 10, 209, 0.5);
+    text-align: center;
+    width: 300px;
+}
+
+.marquee {
+    background-color: rgb(231, 220, 224);
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 10px 0; /* Tạo khoảng cách trên dưới */
+    position: relative;
+    margin-top: 80px; /* Điều chỉnh khoảng cách xuống dưới */
+
+}
+
+.marquee h1 {
+    display: inline-block;
+    font-size: 28px;
+    color: #e90f9d;
+    font-weight: bold;
+    animation: marquee 7s linear infinite;
+    position: relative; /* Giữ nguyên vị trí */
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    text-align: left;
+    font-weight: bold;
+}
+
+input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    background: #2a2a2a;
+    color: #fff;
+    outline: none;
+}
+
+button {
+    background-color: #c90ca0;
+    color: #000;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #e11ada;
+}
+
+.register {
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(8, 214, 138, 0.5);
+    text-align: center;
+    width: 300px;
+}
+.Login, .register {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* =======slide show======== */
+.slideshow-container {
+    position: relative;
+    width: 70vw; /* Giảm chiều ngang, không full màn hình */
+    max-width: 1200px; /* Giới hạn chiều ngang tối đa */
+    height: 390px; /* Giảm chiều cao */
+    margin-left: auto; /* Đẩy sang phải */
+    margin-right: 50px; /* Canh sát lề phải */
+    overflow: hidden;
+    top: 20px;
+}
+
+.slide {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo ảnh luôn đẹp */
+}
+
+
+/* Hiệu ứng fade in/out */
+.fade {
+    animation: fadeEffect 1.5s;
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0.4}
+    to {opacity: 1}
+}
+
+/* Nút điều hướng */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 50%;
+    user-select: none;
+}
+
+.prev { left: 20px; }
+.next { right: 20px; }
+
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Chấm chỉ số */
+.dots-container {
+    text-align: center;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+}
+
+.dot {
+    height: 10px;
+    width: 10px;
+    margin: 0 5px;
+    background-color: #bbb;
+    display: inline-block;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: white;
+}
+
+/* =======DANH MUC SAN PHAM===== */
+.container {
+    position: relative;
+}
+
+.sidebar {
+    width: 300px;
+    position: absolute;
+    top: 20px; /* Đẩy lên gần sát top */
+    left: 30px; /* Dịch sang phải */
+    padding: 20px;
+    background-color: #1b1b1b;
+    height: auto;
+    border-radius: 8px;
+}
+
+.slider {
+    margin-left: 340px; /* Để slide không đè lên sidebar (300px + 40px margin) */
+}
+
+
+.sidebar-title {
+    font-size: 35px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.menu-item {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 8px;
+    background-color: #2a2a2a;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    text-align: left;
+}
+
+.menu-item:hover {
+    background-color: #444;
+}
+
+.submenu {
+    display: none;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.submenu a {
+    display: block;
+    padding: 5px 15px;
+    text-decoration: none;
+    color: #bbb;
+}
+
+.submenu a:hover {
+    color: #ffca28;
+}
