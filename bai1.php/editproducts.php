@@ -1,13 +1,13 @@
 <?php
 session_start();
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
-    echo "Bạn không có quyền truy cập trang này.";
+    echo "You do not have permission to access this page.";
     exit();
 }
 
 $connect = new mysqli('localhost', 'root', '', 'se07102_sdlc');
 if ($connect->connect_error) {
-    die("Kết nối thất bại: " . $connect->connect_error);
+    die("Connection failed: " . $connect->connect_error);
 }
 
 $id = $_GET['id'];
@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $quantity = $_POST["quantity"];
     $category = $_POST["category"];
 
-    // Xử lý upload ảnh
+    // Handle image upload
     if ($_FILES["image"]["name"]) {
         $target_dir = "uploads/";
         if (!is_dir($target_dir)) {
@@ -37,12 +37,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $image = $product['image'];
     }
 
-    // Cập nhật database
+    // Update database
     $sql = "UPDATE products SET name=?, description=?, price=?, quantity=?, image=?, category=? WHERE id=?";
     $stmt = $connect->prepare($sql);
     $stmt->bind_param("ssdissi", $name, $description, $price, $quantity, $image, $category, $id);
     if ($stmt->execute()) {
-        echo "<script>alert('Cập nhật sản phẩm thành công!'); window.location.href='manageproducts.php';</script>";
+        echo "<script>alert('Product updated successfully!'); window.location.href='manageproducts.php';</script>";
     }
 }
 ?>
@@ -112,35 +112,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </style>
 
 <div class="container">
-    <h2>Cập nhật sản phẩm</h2>
+    <h2>Update Product</h2>
     <form method="post" enctype="multipart/form-data">
-        <label>Tên sản phẩm:</label>
+        <label>Product Name:</label>
         <input type="text" name="name" value="<?= $product['name'] ?>" required>
 
-        <label>Mô tả:</label>
+        <label>Description:</label>
         <textarea name="description" required><?= $product['description'] ?></textarea>
 
-        <label>Giá:</label>
+        <label>Price:</label>
         <input type="number" name="price" value="<?= $product['price'] ?>" required>
 
-        <label>Số lượng:</label>
+        <label>Quantity:</label>
         <input type="number" name="quantity" value="<?= $product['quantity'] ?>" required>
 
-        <label>Thể loại hiện tại: <strong><?= $product['category'] ?></strong></label>
-        <label>Thay đổi thể loại:</label>
+        <label>Current Category: <strong><?= $product['category'] ?></strong></label>
+        <label>Change Category:</label>
         <select name="category" required>
-            <option value="">--Chọn thể loại mới--</option>
-            <option value="Sách Văn Học" <?= $product['category'] == 'Sách Văn Học' ? 'selected' : '' ?>>Sách Văn Học</option>
-            <option value="Sách Tâm Lý - Kỹ Năng Sống" <?= $product['category'] == 'Sách Tâm Lý - Kỹ Năng Sống' ? 'selected' : '' ?>>Sách Tâm Lý - Kỹ Năng Sống</option>
-            <option value="Sách Thiếu Nhi" <?= $product['category'] == 'Sách Thiếu Nhi' ? 'selected' : '' ?>>Sách Thiếu Nhi</option>
-            <option value="Sách Chuyên Ngành" <?= $product['category'] == 'Sách Chuyên Ngành' ? 'selected' : '' ?>>Sách Chuyên Ngành</option>
-            <option value="Sách Giáo Khoa - Giáo Trình" <?= $product['category'] == 'Sách Giáo Khoa - Giáo Trình' ? 'selected' : '' ?>>Sách Giáo Khoa - Giáo Trình</option>
-            <option value="Sách Tin Học - Ngoại Ngữ" <?= $product['category'] == 'Sách Tin Học - Ngoại Ngữ' ? 'selected' : '' ?>>Sách Tin Học - Ngoại Ngữ</option>
-        </select>
+            <option value="">--Select new category--</option>
+            <option value="Literary Book" <?= $product['category'] == 'Literary Book' ? 'selected' : '' ?>>Literary Book</option>
+            <option value="Psychology - Life Skills Books" <?= $product['category'] == 'Psychology - Life Skills Books' ? 'selected' : '' ?>>Psychology - Life Skills Books</option>
+            <option value="Children's Books" <?= $product['category'] == 'Children Books' ? 'selected' : '' ?>>Childrens Books</option>
+            <option value="Specialized Books" <?= $product['category'] == 'Specialized Books' ? 'selected' : '' ?>>Specialized Books</option>
+            <option value="Textbooks - Curriculum" <?= $product['category'] == 'Textbooks - Curriculum' ? 'selected' : '' ?>>Textbooks - Curriculum</option>
+            <option value="IT - Foreign Language Books" <?= $product['category'] == 'IT - Foreign Language Books' ? 'selected' : '' ?>>IT - Foreign Language Books</option>
+            <option value="Marketing - Sales Products" <?= $product['category'] == 'Marketing - Sales Products' ? 'selected' : '' ?>>Marketing - Sales Products</option>
+            <option value="Human Resources & Employment" <?= $product['category'] == 'Human Resources & Employment' ? 'selected' : '' ?>>Human Resources & Employment</option>
+            <option value="Business Figures & Lessons" <?= $product['category'] == 'Business Figures & Lessons' ? 'selected' : '' ?>>Business Figures & Lessons</option>
+            <option value="Economic Analysis & Environment" <?= $product['category'] == 'Economic Analysis & Environment' ? 'selected' : '' ?>>Economic Analysis & Environment</option>
+            <option value="Management & Leadership" <?= $product['category'] == 'Management & Leadership' ? 'selected' : '' ?>>Management & Leadership</option>
+            <option value="Finance & Currency" <?= $product['category'] == 'Finance & Currency' ? 'selected' : '' ?>>Finance & Currency</option>
+            <option value="Entrepreneurship & Work Skills" <?= $product['category'] == 'Entrepreneurship & Work Skills' ? 'selected' : '' ?>>Entrepreneurship & Work Skills</option>
+            <option value="Literary/Historical Figures" <?= $product['category'] == 'Literary/Historical Figures' ? 'selected' : '' ?>>Literary/Historical Figures</option>
+            <option value="Novels" <?= $product['category'] == 'Novels' ? 'selected' : '' ?>>Novels</option>
+            <option value="Historical Novels" <?= $product['category'] == 'Historical Novels' ? 'selected' : '' ?>>Historical Novels</option>
+            <option value="Folk Tales & Poetry" <?= $product['category'] == 'Folk Tales & Poetry' ? 'selected' : '' ?>>Folk Tales & Poetry</option>
+            <option value="Short Stories - Essays" <?= $product['category'] == 'Short Stories - Essays' ? 'selected' : '' ?>>Short Stories - Essays</option>
+            <option value="Childrens Stories" <?= $product['category'] == 'Childrens Stories' ? 'selected' : '' ?>>Childrens Stories</option>
+            <option value="Reports, Chronicles" <?= $product['category'] == 'Reports, Chronicles' ? 'selected' : '' ?>>Reports, Chronicles</option>
+            <option value="Books About Literary/Historical Figures" <?= $product['category'] == 'Books About Literary/Historical Figures' ? 'selected' : '' ?>>Books About Literary/Historical Figures</option>
+            <option value="Poetry" <?= $product['category'] == 'Poetry' ? 'selected' : '' ?>>Poetry</option>
+            <option value="Historical Stories" <?= $product['category'] == 'Historical Stories' ? 'selected' : '' ?>>Historical Stories</option>
+            <option value="Short Stories" <?= $product['category'] == 'Short Stories' ? 'selected' : '' ?>>Short Stories</option>
+            <option value="Family, Parenting" <?= $product['category'] == 'Family, Parenting' ? 'selected' : '' ?>>Family, Parenting</option>
+            <option value="Psychology - Gender Studies" <?= $product['category'] == 'Psychology - Gender Studies' ? 'selected' : '' ?>>Psychology - Gender Studies</option>
+            <option value="Home Economics" <?= $product['category'] == 'Home Economics' ? 'selected' : '' ?>>Home Economics</option>
+            <option value="Natural Sciences" <?= $product['category'] == 'Natural Sciences' ? 'selected' : '' ?>>Natural Sciences</option>
+            <option value="Social Sciences" <?= $product['category'] == 'Social Sciences' ? 'selected' : '' ?>>Social Sciences</option>
+            <option value="Fine Arts, Music" <?= $product['category'] == 'Fine Arts, Music' ? 'selected' : '' ?>>Fine Arts, Music</option>
 
-        <label>Ảnh sản phẩm (chọn từ máy):</label>
+        </select>
+        <label>Product Image (select from device):</label>
         <input type="file" name="image" accept="image/*">
 
-        <input type="submit" value="Cập nhật">
+        <input type="submit" value="Update">
     </form>
 </div>

@@ -78,44 +78,18 @@ function toggleMenu(id) {
         submenu.style.display = "block";
     }
 }
-// ======sach van hoc=======
 document.addEventListener("DOMContentLoaded", function () {
-    const track = document.querySelector(".slider-track");
-    const prevBtn = document.querySelector(".prev-btn");
-    const nextBtn = document.querySelector(".next-btn");
-    const books = document.querySelectorAll(".vanhoc-book");
+    function setupSlider(sliderClass) {
+        const track = document.getElementById(`${sliderClass}-track`);
+        const prevBtn = document.querySelector(`.prev-btn[data-slider="${sliderClass}"]`);
+        const nextBtn = document.querySelector(`.next-btn[data-slider="${sliderClass}"]`);
+        const books = document.querySelectorAll(`.${sliderClass}-books`);
 
-    let currentIndex = 0;
-    const bookWidth = books[0].offsetWidth + 10; // Kích thước mỗi sách + khoảng cách
-    const maxIndex = books.length - 3; // Hiển thị 3 sách cùng lúc (có thể thay đổi)
-
-    nextBtn.addEventListener("click", function () {
-        if (currentIndex < maxIndex) {
-            currentIndex++;
-            track.style.transform = `translateX(-${currentIndex * bookWidth}px)`;
-        }
-    });
-
-    prevBtn.addEventListener("click", function () {
-        if (currentIndex > 0) {
-            currentIndex--;
-            track.style.transform = `translateX(-${currentIndex * bookWidth}px)`;
-        }
-    });
-});
-document.addEventListener("DOMContentLoaded", function () {
-    function setupSlider(containerSelector, trackSelector, prevSelector, nextSelector, bookSelector) {
-        const container = document.querySelector(containerSelector);
-        const track = document.querySelector(trackSelector);
-        const prevBtn = document.querySelector(prevSelector);
-        const nextBtn = document.querySelector(nextSelector);
-        const books = document.querySelectorAll(bookSelector);
-
-        if (!container || !track || !prevBtn || !nextBtn || books.length === 0) return;
+        if (!track || !prevBtn || !nextBtn || books.length === 0) return;
 
         let currentIndex = 0;
-        const bookWidth = books[0].offsetWidth + 10; // Kích thước mỗi sách + khoảng cách
-        const visibleBooks = Math.floor(container.offsetWidth / bookWidth);
+        const bookWidth = books[0].offsetWidth + 10;
+        const visibleBooks = Math.floor(track.parentElement.offsetWidth / bookWidth);
         const maxIndex = books.length - visibleBooks;
 
         function updateSlider() {
@@ -126,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (currentIndex < maxIndex) {
                 currentIndex++;
             } else {
-                currentIndex = 0; // Quay lại đầu nếu đến cuối
+                currentIndex = 0;
             }
             updateSlider();
         });
@@ -135,13 +109,178 @@ document.addEventListener("DOMContentLoaded", function () {
             if (currentIndex > 0) {
                 currentIndex--;
             } else {
-                currentIndex = maxIndex; // Quay về cuối nếu ở đầu
+                currentIndex = maxIndex;
             }
             updateSlider();
         });
     }
 
-    //Setup từng slider riêng biệt
-    setupSlider(".vanhoc-slider-container", ".vanhoc-slider-container .slider-track", ".vanhoc-slider-container .prev-btn", ".vanhoc-slider-container .next-btn", ".vanhoc-book");
-    setupSlider(".sach-tam-ly-ky-nang-song-slider-container", ".sach-tam-ly-ky-nang-song-slider-container .slider-track", ".sach-tam-ly-ky-nang-song-slider-container .prev-btn", ".sach-tam-ly-ky-nang-song-slider-container .next-btn", ".tamlykynangsong-book");
+    // Gọi hàm setup cho từng slider
+    const sliders = ["vanhoc", "tamlykynangsong", "kinhte", "thieunhi", "tamlygioitinh"];
+    sliders.forEach(setupSlider);
 });
+
+// ======search box=====
+function searchProduct() {
+    let keyword = document.getElementById("searchInput").value.trim();
+    if (keyword === "") {
+        alert("Vui lòng nhập từ khóa tìm kiếm!");
+        return;
+    }
+    window.location.href = `index.php?search=${encodeURIComponent(keyword)}`;
+}
+
+// ====danh muc san pham====
+function toggleMenu(menuId) {
+    var submenu = document.getElementById(menuId);
+    if (submenu.style.display === "block") {
+        submenu.style.display = "none";
+    } else {
+        submenu.style.display = "block";
+    }
+}
+
+
+// ====voucher===
+document.addEventListener("DOMContentLoaded", function() {
+    loadSavedVouchers();
+});
+
+// Lưu mã giảm giá
+function saveVoucher(code) {
+    let savedVouchers = JSON.parse(localStorage.getItem("savedVouchers")) || [];
+    if (!savedVouchers.includes(code)) {
+        savedVouchers.push(code);
+        localStorage.setItem("savedVouchers", JSON.stringify(savedVouchers));
+    }
+    loadSavedVouchers();
+}
+
+// Hiển thị mã đã lưu
+function loadSavedVouchers() {
+    let savedVouchers = JSON.parse(localStorage.getItem("savedVouchers")) || [];
+    let container = document.getElementById("saved-vouchers");
+    container.innerHTML = "";
+    savedVouchers.forEach(code => {
+        let btn = document.createElement("div");
+        btn.classList.add("saved-voucher");
+        btn.innerText = code;
+        btn.onclick = function() {
+            document.getElementById("voucher-code").value = code;
+        };
+        container.appendChild(btn);
+    });
+}
+
+// Kiểm tra mã giảm giá hợp lệ
+function applyVoucher() {
+    let voucher = document.getElementById("voucher-code").value;
+    let message = document.getElementById("voucher-message");
+
+    let validVouchers = {
+        "SALE10": 10,
+        "FREESHIP": 0,
+        "DISCOUNT50": 50
+    };
+
+    if (validVouchers[voucher]) {
+        message.innerHTML = `🎉 Mã hợp lệ! Giảm ${validVouchers[voucher]}% đơn hàng!`;
+        message.style.color = "green";
+    } else {
+        message.innerHTML = "❌ Mã không hợp lệ. Vui lòng thử lại.";
+        message.style.color = "red";
+    }
+}
+let showVoucher = true; // Biến kiểm tra trạng thái hiển thị
+
+function toggleVoucherSection() {
+    let voucherSection = document.getElementById("voucher-input-section");
+    let promoSection = document.getElementById("promotion-section");
+
+    if (showVoucher) {
+        voucherSection.style.display = "none";
+        promoSection.style.display = "block";
+    } else {
+        voucherSection.style.display = "block";
+        promoSection.style.display = "none";
+    }
+
+    showVoucher = !showVoucher;
+}
+
+// Tự động chuyển đổi nội dung mỗi 3 giây
+setInterval(toggleVoucherSection, 7000);
+
+// ====================
+// Tạo hiệu ứng hoa rơi bằng emoji
+// Danh sách phần tử: hoa, lá, nhụy
+// Khai báo emoji với class riêng
+const petalTypes = [
+    { emoji: '🌸', class: 'flower' },    // Hoa đào
+    { emoji: '🍃', class: 'leaf' },      // Lá
+    { emoji: '●', class: 'center' }      // Nhụy hoa
+];
+
+// Hàm tạo một icon rơi
+function createPetal(type) {
+    const petal = document.createElement('div');
+    petal.className = 'blossom ' + type.class;
+    petal.innerText = type.emoji;
+
+    petal.style.left = Math.random() * window.innerWidth + 'px';
+    petal.style.fontSize = Math.random() * 12 + 16 + 'px';
+    petal.style.animationDuration = Math.random() * 4 + 4 + 's';
+    petal.style.opacity = Math.random();
+
+    document.body.appendChild(petal);
+    setTimeout(() => petal.remove(), 10000);
+}
+
+// Chạy rơi hoa
+if (window.innerWidth > 768) {
+    setInterval(() => {
+        // Rơi 10 icon mỗi đợt
+        for (let i = 0; i < 10; i++) {
+            if (i < 5) {
+                // 5 icon đầu là hoa
+                createPetal(petalTypes[0]);
+            } else {
+                // 5 icon còn lại: ngẫu nhiên giữa lá và nhụy
+                const random = Math.floor(Math.random() * 2) + 1; // 1 hoặc 2
+                createPetal(petalTypes[random]);
+            }
+        }
+    }, 1000); // Cứ mỗi 1 giây rơi 10 item
+}
+
+// CSS chèn từ JS
+const style = document.createElement('style');
+style.innerHTML = `
+  .blossom {
+    position: fixed;
+    top: -40px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: fall linear forwards;
+  }
+
+  .blossom.flower {
+    color: #ff69b4;
+  }
+
+  .blossom.leaf {
+    color: #2ecc71;
+  }
+
+  .blossom.center {
+    color: gold;
+  }
+
+  @keyframes fall {
+    to {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(style);

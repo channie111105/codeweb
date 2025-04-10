@@ -1,25 +1,25 @@
 <?php
 session_start();
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
-    echo "Bạn không có quyền truy cập trang này.";
+    echo "You do not have permission to access this page.";
     exit();
 }
 
 $connect = new mysqli('localhost', 'root', '', 'se07102_sdlc');
 if ($connect->connect_error) {
-    die("Kết nối thất bại: " . $connect->connect_error);
+    die("Connection failed: " . $connect->connect_error);
 }
 
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $connect->query("DELETE FROM products WHERE id = $id");
-    echo "<script>alert('Xóa sản phẩm thành công!'); window.location.href='manageproducts.php';</script>";
+    echo "<script>alert('Product deleted successfully!'); window.location.href='manageproducts.php';</script>";
 }
 
-// Lấy danh sách thể loại duy nhất
+// Fetch unique categories
 $categories_result = $connect->query("SELECT DISTINCT category FROM products");
 
-// Xử lý lọc sản phẩm theo thể loại
+// Handle product filtering by category
 $filter_category = isset($_GET['category']) ? $_GET['category'] : '';
 if ($filter_category) {
     $stmt = $connect->prepare("SELECT * FROM products WHERE category = ?");
@@ -31,11 +31,11 @@ if ($filter_category) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý sản phẩm</title>
+    <title>Manage Products</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -128,56 +128,56 @@ if ($filter_category) {
 <body>
 
 <div class="container">
-    <h2>Quản lý sản phẩm</h2>
+    <h2>Manage Products</h2>
 
     <form method="get" class="filter-form">
-        <label for="category">Lọc theo thể loại: </label>
+        <label for="category">Filter by Category: </label>
         <select name="category" id="category">
-            <option value="">-- Hiện tất cả --</option>
+            <option value="">-- Show All --</option>
             <?php while ($cat = $categories_result->fetch_assoc()): ?>
                 <option value="<?= $cat['category'] ?>" <?= $cat['category'] == $filter_category ? 'selected' : '' ?>>
                     <?= $cat['category'] ?>
                 </option>
             <?php endwhile; ?>
         </select>
-        <button type="submit" class="filter-btn">Lọc</button>
+        <button type="submit" class="filter-btn">Filter</button>
         <?php if ($filter_category): ?>
-            <a href="manageproducts.php" style="color: #ff69b4; text-decoration: none; margin-left: 10px;">❌ Xóa lọc</a>
+            <a href="manageproducts.php" style="color: #ff69b4; text-decoration: none; margin-left: 10px;">❌ Clear Filter</a>
         <?php endif; ?>
     </form>
 
     <table>
         <tr>
             <th>ID</th>
-            <th>Tên sản phẩm</th>
-            <th>Mô tả</th>
-            <th>Giá</th>
-            <th>Số lượng</th>
-            <th>Thể loại</th>
-            <th>Hình ảnh</th>
-            <th>Hành động</th>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Category</th>
+            <th>Image</th>
+            <th>Actions</th>
         </tr>
         <?php while ($row = $result->fetch_assoc()): ?>
         <tr>
             <td><?= $row['id'] ?></td>
             <td><?= $row['name'] ?></td>
             <td><?= $row['description'] ?></td>
-            <td><?= number_format($row['price'], 0, ',', '.') ?> đ</td>
+            <td><?= number_format($row['price'], 0, ',', '.') ?> VND</td>
             <td><?= $row['quantity'] ?></td>
             <td><?= $row['category'] ?></td>
-            <td><img src="<?= $row['image'] ?>" alt="Hình sản phẩm"></td>
+            <td><img src="<?= $row['image'] ?>" alt="Product Image"></td>
             <td class="actions">
-                <a href="editproducts.php?id=<?= $row['id'] ?>" class="edit">✏ Sửa</a>
-                <a href="?delete=<?= $row['id'] ?>" class="delete" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">❌ Xóa</a>
+                <a href="editproducts.php?id=<?= $row['id'] ?>" class="edit">✏ Edit</a>
+                <a href="?delete=<?= $row['id'] ?>" class="delete" onclick="return confirm('Are you sure you want to delete this product?')">❌ Delete</a>
             </td>
         </tr>
         <?php endwhile; ?>
     </table>
 
     <div class="buttons">
-        <a href="addproducts.php">➕ Thêm sản phẩm</a>
-        <a href="index.php">🏠 Quay về Trang chủ</a>
-        <a href="users.php">👥 Xem danh sách người dùng</a>
+        <a href="addproducts.php">➕ Add Product</a>
+        <a href="index.php">🏠 Back to Homepage</a>
+        <a href="users.php">👥 View User List</a>
     </div>
 </div>
 

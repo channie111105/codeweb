@@ -1,13 +1,13 @@
 <?php
 session_start();
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
-    echo "Bạn không có quyền truy cập trang này.";
+    echo "You do not have permission to access this page.";
     exit();
 }
 
 $connect = new mysqli('localhost', 'root', '', 'se07102_sdlc');
 if ($connect->connect_error) {
-    die("Kết nối thất bại: " . $connect->connect_error);
+    die("Connection failed: " . $connect->connect_error);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $allowed_types = ["jpg", "jpeg", "png", "gif"];
     if (!in_array($imageFileType, $allowed_types)) {
-        echo "<script>alert('Chỉ hỗ trợ file JPG, JPEG, PNG, GIF!');</script>";
+        echo "<script>alert('Only JPG, JPEG, PNG, GIF files are supported!');</script>";
         exit();
     }
 
@@ -42,12 +42,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param("ssdiss", $name, $description, $price, $quantity, $image_path, $category);
 
         if ($stmt->execute()) {
-            echo "<script>alert('Thêm sản phẩm thành công!'); window.location.href='manageproducts.php';</script>";
+            echo "<script>alert('Product added successfully!'); window.location.href='manageproducts.php';</script>";
         } else {
-            echo "<script>alert('Lỗi khi thêm sản phẩm!');</script>";
+            echo "<script>alert('Error adding product!');</script>";
         }
     } else {
-        echo "<script>alert('Lỗi khi tải ảnh lên!');</script>";
+        echo "<script>alert('Error uploading image!');</script>";
     }
 }
 ?>
@@ -57,42 +57,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thêm Sản Phẩm</title>
+    <title>Add Products</title>
 </head>
 <body>
 <div class="container">
-        <h2>Thêm Sản Phẩm</h2>
+        <h2>Add Products</h2>
     <form method="post" enctype="multipart/form-data">
-        <label for="name">Tên sản phẩm:</label>
+        <label for="name">Products Name:</label>
         <input type="text" name="name" required>
 
-        <label for="description">Mô tả:</label>
+        <label for="description">Describe:</label>
         <textarea name="description" required></textarea>
 
-        <label for="price">Giá:</label>
+        <label for="price">Price:</label>
         <input type="number" name="price" required>
 
-        <label for="quantity">Số lượng:</label>
+        <label for="quantity">Quantity:</label>
         <input type="number" name="quantity" required>
 
-        <label for="category">Thể loại:</label><br>
+        <label for="category">Category:</label><br>
         <select name="category" required>
-            <option value="">--Chọn thể loại--</option>
-            <option value="Sách Văn Học">Sách Văn Học</option>
-            <option value="Sách Tâm Lý - Kỹ Năng Sống">Sách Tâm Lý - Kỹ Năng Sống</option>
-            <option value="Sách Thiếu Nhi">Sách Thiếu Nhi</option>
-            <option value="Sách Chuyên Ngành">Sách Chuyên Ngành</option>
-            <option value="Sách Giáo Khoa - Giáo Trình">Sách Giáo Khoa - Giáo Trình</option>
-            <option value="Sách Tin Học - Ngoại Ngữ">Sách Tin Học - Ngoại Ngữ</option>
-        </select>
+            <option value="">--Choose genre--</option>
+            <option value="Literary book">Literary book</option>
+            <option value="Psychological books - Life skills">Psychological books - Life skills</option>
+            <option value="Economic book">Economic book</option>
+            <option value="Children book">Children book</option>
+            <option value="Psychological books - Gender">Psychological books - Gender</option>
+            <option value="Marketing - Sales Products">Marketing - Sales Products</option>
+            <option value="Human Resources & Employment">Human Resources & Employment</option>
+            <option value="Business Figures & Lessons">Business Figures & Lessons</option>
+            <option value="Economic Analysis & Environment">Economic Analysis & Environment</option>
+            <option value="Management & Leadership">Management & Leadership</option>
+            <option value="Finance & Currency">Finance & Currency</option>
+            <option value="Entrepreneurship & Work Skills">Entrepreneurship & Work Skills</option>
+            <option value="Literary/Historical Figures">Literary/Historical Figures</option>
+            <option value="Novels">Novels</option>
+            <option value="Historical Novels">Historical Novels</option>
+            <option value="Folk Tales & Poetry">Folk Tales & Poetry</option>
+            <option value="Short Stories - Essays">Short Stories - Essays</option>
+            <option value="Childrens Stories">Childrens Stories</option>
+            <option value="Reports, Chronicles">Reports, Chronicles</option>
+            <option value="Books About Literary/Historical Figures">Books About Literary/Historical Figures</option>
+            <option value="Poetry">Poetry</option>
+            <option value="Historical Stories">Historical Stories</option>
+            <option value="Short Stories">Short Stories</option>
+            <option value="Family, Parenting">Family, Parenting</option>
+            <option value="Psychology - Gender Studies">Psychology - Gender Studies</option>
+            <option value="Home Economics">Home Economics</option>
+            <option value="Natural Sciences">Natural Sciences</option>
+            <option value="Social Sciences">Social Sciences</option>
+            <option value="Fine Arts, Music">Fine Arts, Music</option>
 
-        <label for="image">Ảnh:</label>
+
+
+        </select>
+        <label for="image">Image:</label>
         <input type="file" name="image" required>
 
-        <button type="submit">Thêm sản phẩm</button>
+        <button type="submit">Add product</button>
     </form>
     <div class="buttons">
-        <a href="manageproducts.php">⬅ Quay lại</a>
+        <a href="manageproducts.php">⬅ Back</a>
     </div>
 </div>
 <style>
@@ -224,7 +249,7 @@ button.loading::after {
     form.addEventListener('submit', function() {
         submitButton.classList.add('loading');
         submitButton.disabled = true;
-        submitButton.textContent = "Đang thêm...";
+        submitButton.textContent = "Adding...";
     });
 </script>
 
